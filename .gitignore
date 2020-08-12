@@ -1,5 +1,5 @@
-config.py
 __pycache__/
 *.log
 *.bat
 *.db
+config.py
