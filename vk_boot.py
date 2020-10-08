@@ -1,5 +1,6 @@
+import datetime
 import vk_api
-from random import randint
+import random
 from config import token
 
 #создаем сессию
@@ -7,23 +8,23 @@ from config import token
 vk = vk_api.VkApi(token=token)
 #авторизуем токен
 vk._auth_token()
-
 #проверка на сервере вк приходящие сообщения
+
+# print(messages)
+#print(datetime.datetime.now().time())
 try:
     while True:
-        messages = vk.method("messages.getConversations", {"offset": 0, "count": 20, "filter": "unanswered "})
-        if messages["count"]>=1:
+        now = datetime.datetime.now().time()
+        messages = vk.method("messages.getConversations", {"offset": 0, "count": 20, "filter": "unanswered"})
+        if messages["count"] >= 1:
             text = messages["items"][0]["last_message"]["text"]
             user_id = messages["items"][0]["last_message"]["from_id"]
-            if text.lower() == str:
-                vk.method("message.send", {"user_id": user_id, "message": "Привет",
-                                           "random_id": randint(1, 1000)})
+            if text.lower() == 'привет':
+                vk.method("messages.send", {"user_id": user_id, "message": "Привет", "random_id": random.randint(1, 10000)})
             else:
-                vk.method("message.send", {"user_id": user_id, "message": "Привет, я бот, ничего не понимаю",
-                                       "random_id": randint(1, 1000)})
-        else:
-            continue
+                vk.method("messages.send", {"user_id": user_id, "message": "Привет, я тупой бот, ничего не понимаю", "random_id": random.randint(1, 10000)})
 
-
+except vk_api.exceptions.ApiError:
+    print("Something wrong!")
 
 
